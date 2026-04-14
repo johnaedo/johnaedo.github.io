@@ -1,35 +1,308 @@
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-        <title>Dr. John Aedo's Lecture Slides</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dr. John Aedo's Course Materials</title>
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    sans-serif;
+                background: #f5f5f5;
+                color: #111;
+                min-height: 100vh;
+                padding: 2rem 1rem;
+            }
+
+            .page {
+                max-width: 760px;
+                margin: 0 auto;
+            }
+
+            .header {
+                padding: 1.5rem 1.75rem;
+                background: #111;
+                border-radius: 12px;
+                margin-bottom: 2rem;
+                border-left: 4px solid #ffc904;
+            }
+
+            .header-sub {
+                font-size: 12px;
+                font-weight: 500;
+                color: #ffc904;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                margin-bottom: 4px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+                font-weight: 500;
+                color: #fff;
+                margin-bottom: 4px;
+            }
+
+            .header-dept {
+                font-size: 13px;
+                font-weight: 400;
+                color: #aaa;
+            }
+
+            .section-label {
+                font-size: 12px;
+                font-weight: 500;
+                color: #666;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                margin-bottom: 10px;
+                padding-left: 2px;
+            }
+
+            .card-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 10px;
+                margin-bottom: 2rem;
+            }
+
+            .card {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                background: #fff;
+                border: 0.5px solid rgba(0, 0, 0, 0.12);
+                border-radius: 12px;
+                padding: 14px 16px;
+                text-decoration: none;
+                transition:
+                    border-color 0.15s,
+                    background 0.15s;
+                cursor: pointer;
+            }
+
+            .card:hover {
+                border-color: #ffc904;
+                background: #fafafa;
+            }
+
+            .card-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+                background: #1a1a1a;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .card-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .card-text {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .card-title {
+                font-size: 14px;
+                font-weight: 500;
+                color: #111;
+                line-height: 1.3;
+            }
+
+            .card-meta {
+                font-size: 12px;
+                color: #888;
+                margin-top: 2px;
+            }
+
+            .arrow {
+                color: #ffc904;
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+
+            .divider {
+                border: none;
+                border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+                margin: 0 0 2rem;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background: #1a1a1a;
+                    color: #eee;
+                }
+                .card {
+                    background: #222;
+                    border-color: rgba(255, 255, 255, 0.08);
+                }
+                .card:hover {
+                    background: #2a2a2a;
+                }
+                .card-title {
+                    color: #eee;
+                }
+                .card-meta {
+                    color: #888;
+                }
+                .section-label {
+                    color: #888;
+                }
+                .divider {
+                    border-color: rgba(255, 255, 255, 0.08);
+                }
+            }
+        </style>
     </head>
     <body>
-        <h1>Lecture Slides</h1>
-        <ul>
-            <li>
-                <a href="Cypress Testing Guide/index.html"
-                    >Cypress Testing Guide</a
+        <div class="page">
+            <div class="header">
+                <div class="header-sub">University of Central Florida</div>
+                <h1>Dr. John Aedo — Course Materials</h1>
+                <div class="header-dept">Department of Computer Science</div>
+            </div>
+
+            <p class="section-label">Lecture Slides</p>
+            <div class="card-grid">
+                <a class="card" href="Cypress Testing Guide/index.html">
+                    <div class="card-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#FFC904"
+                            stroke-width="1.75"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <div class="card-title">Cypress Testing Guide</div>
+                        <div class="card-meta">Testing</div>
+                    </div>
+                    <span class="arrow">›</span>
+                </a>
+                <a class="card" href="Lecture 21 - Docker/index.html">
+                    <div class="card-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#FFC904"
+                            stroke-width="1.75"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <rect x="2" y="7" width="20" height="14" rx="2" />
+                            <path
+                                d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"
+                            />
+                            <line x1="12" y1="12" x2="12" y2="16" />
+                            <line x1="10" y1="14" x2="14" y2="14" />
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <div class="card-title">Docker</div>
+                        <div class="card-meta">Lecture 21</div>
+                    </div>
+                    <span class="arrow">›</span>
+                </a>
+                <a
+                    class="card"
+                    href="Lecture 22 - Software Package Managers/index.html"
                 >
-            </li>
-            <li><a href="Lecture 21 - Docker/index.html"></a>Docker</li>
-            <li>
-                <a href="Lecture 22 - Software Package Managers/index.html"
-                    >Software Package Managers</a
+                    <div class="card-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#FFC904"
+                            stroke-width="1.75"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                            />
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <div class="card-title">Software Package Managers</div>
+                        <div class="card-meta">Lecture 22</div>
+                    </div>
+                    <span class="arrow">›</span>
+                </a>
+                <a
+                    class="card"
+                    href="Lecture 23 - Containerized Applications/index.html"
                 >
-            </li>
-            <li>
-                <a href="Lecture 23 - Containerized Applications/index.html"
-                    >Containerized Applications</a
-                >
-            </li>
-        </ul>
-        <h1>Code Demos and Tutorials</h1>
-        <ul>
-            <li>
-                <a href="/cop4331c"
-                    >COP 4331C - Processes of Object Oriented Software
-                    Development</a
-                >
-            </li>
-        </ul>
+                    <div class="card-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#FFC904"
+                            stroke-width="1.75"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <ellipse cx="12" cy="5" rx="9" ry="3" />
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <div class="card-title">Containerized Applications</div>
+                        <div class="card-meta">Lecture 23</div>
+                    </div>
+                    <span class="arrow">›</span>
+                </a>
+            </div>
+
+            <hr class="divider" />
+
+            <p class="section-label">Code Demos & Tutorials</p>
+            <div class="card-grid">
+                <a class="card" href="/cop4331c">
+                    <div class="card-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#FFC904"
+                            stroke-width="1.75"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path
+                                d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
+                            />
+                            <path
+                                d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+                            />
+                        </svg>
+                    </div>
+                    <div class="card-text">
+                        <div class="card-title">COP 4331C</div>
+                        <div class="card-meta">
+                            Processes of Object Oriented Software Development
+                        </div>
+                    </div>
+                    <span class="arrow">›</span>
+                </a>
+            </div>
+        </div>
     </body>
 </html>
