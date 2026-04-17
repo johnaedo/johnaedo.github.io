@@ -77,12 +77,12 @@
 
             .card {
                 display: flex;
-                align-items: center;
-                gap: 12px;
+                flex-direction: column;
+                gap: 8px;
                 background: #fff;
                 border: 0.5px solid rgba(0, 0, 0, 0.12);
                 border-radius: 12px;
-                padding: 14px 16px;
+                padding: 16px 18px;
                 text-decoration: none;
                 transition:
                     border-color 0.15s,
@@ -95,44 +95,54 @@
                 background: #fafafa;
             }
 
-            .card-icon {
-                width: 36px;
-                height: 36px;
-                border-radius: 8px;
-                background: #1a1a1a;
+            .card-header {
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
+                justify-content: space-between;
             }
 
-            .card-icon svg {
-                width: 18px;
-                height: 18px;
+            .card-code {
+                font-size: 11px;
+                font-weight: 600;
+                color: #ffc904;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                background: #111;
+                padding: 3px 8px;
+                border-radius: 4px;
             }
 
-            .card-text {
-                flex: 1;
-                min-width: 0;
+            .card-level {
+                font-size: 11px;
+                color: #aaa;
+                font-weight: 400;
             }
 
             .card-title {
                 font-size: 14px;
                 font-weight: 500;
                 color: #111;
-                line-height: 1.3;
+                line-height: 1.35;
             }
 
-            .card-meta {
+            .card-desc {
                 font-size: 12px;
-                color: #888;
-                margin-top: 2px;
+                color: #666;
+                line-height: 1.5;
+                flex: 1;
+            }
+
+            .card-footer {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                padding-top: 4px;
+                border-top: 0.5px solid rgba(0, 0, 0, 0.07);
             }
 
             .arrow {
                 color: #ffc904;
                 font-size: 16px;
-                flex-shrink: 0;
             }
 
             .divider {
@@ -152,12 +162,19 @@
                 }
                 .card:hover {
                     background: #2a2a2a;
+                    border-color: #ffc904;
                 }
                 .card-title {
                     color: #eee;
                 }
-                .card-meta {
+                .card-desc {
                     color: #888;
+                }
+                .card-level {
+                    color: #666;
+                }
+                .card-footer {
+                    border-top-color: rgba(255, 255, 255, 0.06);
                 }
                 .section-label {
                     color: #888;
@@ -176,131 +193,103 @@
                 <div class="header-dept">Department of Computer Science</div>
             </div>
 
-            <p class="section-label">Lecture Slides</p>
+            <p class="section-label">Undergraduate Courses</p>
             <div class="card-grid">
-                <a class="card" href="Cypress Testing Guide/index.html">
-                    <div class="card-icon">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#FFC904"
-                            stroke-width="1.75"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <polyline points="16 18 22 12 16 6" />
-                            <polyline points="8 6 2 12 8 18" />
-                        </svg>
+                <a class="card" href="/cop3223c">
+                    <div class="card-header">
+                        <span class="card-code">COP 3223C</span>
+                        <span class="card-level">3000-level</span>
                     </div>
-                    <div class="card-text">
-                        <div class="card-title">Cypress Testing Guide</div>
-                        <div class="card-meta">Testing</div>
+                    <div class="card-title">
+                        Introduction to Programming with C
                     </div>
-                    <span class="arrow">›</span>
+                    <div class="card-desc">
+                        Programming in C including arrays, pointer manipulation,
+                        and use of standard C math and I/O libraries.
+                    </div>
+                    <div class="card-footer"><span class="arrow">›</span></div>
                 </a>
-                <a class="card" href="Lecture 21 - Docker/index.html">
-                    <div class="card-icon">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#FFC904"
-                            stroke-width="1.75"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <rect x="2" y="7" width="20" height="14" rx="2" />
-                            <path
-                                d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"
-                            />
-                            <line x1="12" y1="12" x2="12" y2="16" />
-                            <line x1="10" y1="14" x2="14" y2="14" />
-                        </svg>
+
+                <a class="card" href="/cda3103c">
+                    <div class="card-header">
+                        <span class="card-code">CDA 3103C</span>
+                        <span class="card-level">3000-level</span>
                     </div>
-                    <div class="card-text">
-                        <div class="card-title">Docker</div>
-                        <div class="card-meta">Lecture 21</div>
+                    <div class="card-title">
+                        Computer Logic and Organization
                     </div>
-                    <span class="arrow">›</span>
+                    <div class="card-desc">
+                        Logic design, computer arithmetic, instruction set
+                        architecture using MIPS, data path and control unit
+                        design, and memory hierarchy.
+                    </div>
+                    <div class="card-footer"><span class="arrow">›</span></div>
                 </a>
-                <a
-                    class="card"
-                    href="Lecture 22 - Software Package Managers/index.html"
-                >
-                    <div class="card-icon">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#FFC904"
-                            stroke-width="1.75"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path
-                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
-                            />
-                        </svg>
+
+                <a class="card" href="/cis4004">
+                    <div class="card-header">
+                        <span class="card-code">CIS 4004</span>
+                        <span class="card-level">4000-level</span>
                     </div>
-                    <div class="card-text">
-                        <div class="card-title">Software Package Managers</div>
-                        <div class="card-meta">Lecture 22</div>
+                    <div class="card-title">
+                        Web-Based Information Technology
                     </div>
-                    <span class="arrow">›</span>
+                    <div class="card-desc">
+                        Digital libraries, media formats, compression, streaming
+                        media, mobile internet, and emerging web technologies.
+                    </div>
+                    <div class="card-footer"><span class="arrow">›</span></div>
                 </a>
-                <a
-                    class="card"
-                    href="Lecture 23 - Containerized Applications/index.html"
-                >
-                    <div class="card-icon">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#FFC904"
-                            stroke-width="1.75"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <ellipse cx="12" cy="5" rx="9" ry="3" />
-                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-                        </svg>
+
+                <a class="card" href="/cop4331c">
+                    <div class="card-header">
+                        <span class="card-code">COP 4331C</span>
+                        <span class="card-level">4000-level</span>
                     </div>
-                    <div class="card-text">
-                        <div class="card-title">Containerized Applications</div>
-                        <div class="card-meta">Lecture 23</div>
+                    <div class="card-title">
+                        Processes for Object-Oriented Software Development
                     </div>
-                    <span class="arrow">›</span>
+                    <div class="card-desc">
+                        Team-based software development using object-oriented
+                        design principles, agile processes, and
+                        industry-standard tools.
+                    </div>
+                    <div class="card-footer"><span class="arrow">›</span></div>
+                </a>
+
+                <a class="card" href="/cop4600">
+                    <div class="card-header">
+                        <span class="card-code">COP 4600</span>
+                        <span class="card-level">4000-level</span>
+                    </div>
+                    <div class="card-title">Operating Systems</div>
+                    <div class="card-desc">
+                        Fundamental concepts of OS design: processes,
+                        scheduling, memory management, virtual memory, I/O, and
+                        security.
+                    </div>
+                    <div class="card-footer"><span class="arrow">›</span></div>
                 </a>
             </div>
 
             <hr class="divider" />
 
-            <p class="section-label">Code Demos & Tutorials</p>
+            <p class="section-label">Graduate Courses</p>
             <div class="card-grid">
-                <a class="card" href="/cop4331c">
-                    <div class="card-icon">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#FFC904"
-                            stroke-width="1.75"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path
-                                d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"
-                            />
-                            <path
-                                d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
-                            />
-                        </svg>
+                <a class="card" href="/cop5611">
+                    <div class="card-header">
+                        <span class="card-code">COP 5611</span>
+                        <span class="card-level">5000-level</span>
                     </div>
-                    <div class="card-text">
-                        <div class="card-title">COP 4331C</div>
-                        <div class="card-meta">
-                            Processes of Object Oriented Software Development
-                        </div>
+                    <div class="card-title">
+                        Operating Systems Design Principles
                     </div>
-                    <span class="arrow">›</span>
+                    <div class="card-desc">
+                        Graduate-level study of OS design: synchronization,
+                        protection, distributed systems, and implementation of
+                        modern OS internals.
+                    </div>
+                    <div class="card-footer"><span class="arrow">›</span></div>
                 </a>
             </div>
         </div>
