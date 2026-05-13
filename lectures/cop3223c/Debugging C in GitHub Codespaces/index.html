@@ -339,18 +339,21 @@
                 optionEl.style.color = color;
                 const normalizedColor = optionEl.style.color;
 
-                const [_, c_r, c_g, c_b] = normalizedColor.match(/(\d+), (\d+), (\d+)/);
+                const [_, c_r, c_g, c_b] =
+                    normalizedColor.match(/(\d+), (\d+), (\d+)/);
 
-                const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+                const brightness = (c_r * 299 + c_g * 587 + c_b * 114) / 1000;
                 return brightness > 155;
             }
 
-            const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+            const bgColor = getComputedStyle(document.documentElement)
+                .getPropertyValue("--r-background-color")
+                .trim();
 
             if (isLight(bgColor)) {
-                document.body.classList.add('has-light-background');
+                document.body.classList.add("has-light-background");
             } else {
-                document.body.classList.add('has-dark-background');
+                document.body.classList.add("has-dark-background");
             }
 
             // default options to init reveal.js
@@ -359,8 +362,8 @@
                 progress: true,
                 history: true,
                 center: true,
-                transition: 'default', // none/fade/slide/convex/concave/zoom
-                /common/plugins: [
+                transition: "default", // none/fade/slide/convex/concave/zoom
+                plugins: [
                     ObsidianMarkdown,
                     RevealHighlight,
                     RevealZoom,
@@ -373,29 +376,42 @@
                 allottedTime: "120",
 
                 katex: {
-                    local: '/common/plugin/math/katex',
+                    local: "plugin/math/katex",
                     extensions: ["mhchem"],
                 },
                 markdown: {
                     gfm: true,
                 },
                 mermaid: {
-                    theme: isLight(bgColor) ? 'default' : 'dark',
+                    theme: isLight(bgColor) ? "default" : "dark",
                 },
                 customcontrols: {
-                    controls: [
-                    ]
+                    controls: [],
                 },
             };
 
-            if ( pageInIframe() ) {
+            if (pageInIframe()) {
                 defaultOptions.scrollActivationWidth = 5;
             }
 
             // options from URL query string
             const queryOptions = Reveal().getQueryHash() || {};
 
-            const options = extend(defaultOptions, {"controls":true,"progress":true,"slideNumber":true,"center":true,"transition":"slide","transitionSpeed":"default","width":"1920","height":"1080","margin":0.04}, queryOptions);
+            const options = extend(
+                defaultOptions,
+                {
+                    controls: true,
+                    progress: true,
+                    slideNumber: true,
+                    center: true,
+                    transition: "slide",
+                    transitionSpeed: "default",
+                    width: "1920",
+                    height: "1080",
+                    margin: 0.04,
+                },
+                queryOptions,
+            );
         </script>
 
         <script>
@@ -403,7 +419,7 @@
              * KaTeX Equation Numbering Note
              *
              * KaTeX maintains a global equation counter for \begin{equation} environments.
-             * When navigating between slides, reveal.js math /common/plugin may re-render math, causing
+             * When navigating between slides, reveal.js math plugin may re-render math, causing
              * equation numbers to change randomly.
              *
              * Note: Regular $$ blocks don't have equation numbers - only \begin{equation} does.
