@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+
+        <title></title>
+        <link rel="stylesheet" href="/common/dist/reset.css" />
+        <link rel="stylesheet" href="/common/dist/reveal.css" />
+        <link rel="stylesheet" href="/common/css/slides-extended.css" />
+        <link
+            rel="stylesheet"
+            href="/common/dist/theme/ucf-knights.css"
+            id="theme"
+        />
+        <link rel="stylesheet" href="/common/plugin/highlight/zenburn.css" />
+        <link rel="stylesheet" href="/common/plugin/customcontrols/style.css" />
+
+        <script defer src="/common/dist/fontawesome/all.min.js"></script>
+
+        <script type="text/javascript">
+            function pageInIframe() {
+                return window.location !== window.parent.location;
+            }
+
+            let forgetPop = true;
+            function onPopState(event) {
+                if (forgetPop) {
+                    forgetPop = false;
+                } else if (pageInIframe()) {
+                    parent.postMessage(
+                        event.target.location.href,
+                        "app://obsidian.md",
+                    );
+                }
+            }
+            window.onpopstate = onPopState;
+            window.onmessage = (event) => {
+                if (event.data == "reload") {
+                    window.document.location.reload();
+                }
+                forgetPop = true;
+            };
+
+            function fitElements() {
+                const itemsToFit = document.getElementsByClassName("fitText");
+                for (const item in itemsToFit) {
+                    if (Object.hasOwnProperty.call(itemsToFit, item)) {
+                        const element = itemsToFit[item];
+                        fitElement(element, 1, 1000);
+                        element.classList.remove("fitText");
+                    }
+                }
+            }
+
+            function fitElement(element, start, end) {
+                let size = (end + start) / 2;
+                element.style.fontSize = `${size}px`;
+
+                if (Math.abs(start - end) < 1) {
+                    while (element.scrollHeight > element.offsetHeight) {
+                        size--;
+                        element.style.fontSize = `${size}px`;
+                    }
+                    return;
+                }
+
+                if (element.scrollHeight > element.offsetHeight) {
+                    fitElement(element, start, size);
+                } else {
+                    fitElement(element, size, end);
+                }
+            }
+
+            document.onreadystatechange = () => {
+                fitElements();
+                if (document.readyState === "complete") {
+                    if (
+                        pageInIframe() &&
+                        window.location.href.indexOf("?export") != -1
+                    ) {
+                        parent.postMessage(
+                            event.target.location.href,
+                            "app://obsidian.md",
+                        );
+                    }
+                    if (window.location.href.indexOf("print-pdf") != -1) {
+                        let stateCheck = setInterval(() => {
+                            clearInterval(stateCheck);
+                            window.print();
+                        }, 250);
+                    }
+                }
+            };
+        </script>
+    </head>
+
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # COP 3223C
+                        ## Intro to Programming with C
+                        ### Summer 2026 · Section 1
+                        #### College of Engineering and Computer Science
+                        #### Dr. John Aedo
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Course Overview
+
+                        | | |
+                        |---|---|
+                        | **Term** | Summer 2026 |
+                        | **Days** | Monday & Wednesday |
+                        | **Time** | 2:00 PM – 3:50 PM |
+                        | **Location** | CB1 O104 |
+                        | **Credits** | 3 hours |
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Your Instructor
+
+                        ### Dr. John Aedo
+
+                        - **Email:** John.Aedo@ucf.edu *(Outlook only — not Canvas)*
+                        - **Office Hours:** Tue & Thu, 1:00 PM – 4:00 PM (Zoom)
+                        - **Response Time:** Within 2 business days
+                        - Always include **COP 3223C** in your subject line
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Teaching Team
+
+                        | Role       | Name             | Email                    |
+                        | ---------- | ---------------- | ------------------------ |
+                        | **TA**     | Eshgin Hasanov   | eshgin.hasanov@ucf.edu   |
+                        | **ULA**    | Farrukh Anwar    | farrukh.anwar@ucf.edu    |
+                        | **SI**     | Annika Blackburn | annika.blackburn@ucf.edu |
+                        | **Grader** | Adnan Hossain    | adnan.hossain@ucf.edu    |
+                        | **Grader** | Abrar Abousher   | abrar.abousher@ucf.edu   |
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Course Materials
+
+                        ### Required
+                        - None (no required textbook purchase)
+
+                        ### Recommended
+                        - *C Programming* — Wikipedia
+                        - *The C Programming Language* — Kernighan & Ritchie (ISBN: 0131103628)
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Grading Scale
+
+                        | Grade | Range      |
+                        | ----- | ---------- |
+                        | A     | 90 - 100%  |
+                        | B     | 80 - \<90% |
+                        | C     | 70 - \<80% |
+                        | D     | 60 - \<70% |
+                        | F     | \<60%      |
+                        - No Rounding
+                        - No Grade Bumps
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Grading Breakdown
+
+                        | Component               | Weight   |
+                        | ----------------------- | -------- |
+                        | Programming Assignments | **40%**  |
+                        | Midterm Exam            | **25%**  |
+                        | Final Exam              | **25%**  |
+                        | Quizzes                 | **10%**  |
+                        | **Total**               | **100%** |
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Programming Assignments (40%)
+
+                        - Assigned at the beginning of each module
+                        - **One week** to complete and submit
+                        - Submit **`.c` and `.h` files only** to Webcourses
+
+                        ### Late Penalty:
+                        | Days Late | Penalty              |
+                        | --------- | -------------------- |
+                        | 1 day     | −10%                 |
+                        | 2 days    | −20%                 |
+                        | 3 days    | −30%                 |
+                        | 4+ days   | **0 (not accepted)** |
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Exams (50%)
+
+                        - **Two exams:** Midterm + Cumulative Final
+                        - Delivered **electronically** at the **Evaluation & Proficiency Center (EPC)**
+                          - *2nd floor, Engineering Building 2*
+                        - Must **schedule in advance** — no walk-ins
+                        - Required: valid **UCF ID Card**
+                        - Format: **Closed Book / Closed Notes**
+                        - Instructor-supplied Testing Reference Sheet provided
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Exam Policies
+
+                        ### Allowed exceptions only:
+                        1. SAS (Student Accessibility Services) authorization
+                        2. Medical doctor's note with excusal period
+                        3. Official UCF sanctioned event paperwork
+                        4. UCF-announced weather/campus closures
+
+                        > Personal emergencies, traffic, parking, job interviews — **not eligible for exceptions**
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Quizzes (10%)
+
+                        - **N pairs** of quizzes planned for the semester
+                        - Each quiz is offered **twice on consecutive weeks**
+                        - Score perfectly on week 1? → **Skip week 2**
+                        - Otherwise: review misses and retake a similar quiz
+                        - **Highest score** of each pair is kept
+                        - Designed to prepare you for exams
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## AI Use Policy
+
+                        ### ⚠️ Generative AI is **PROHIBITED**
+
+                        This includes:
+                        - GitHub Copilot, Claude Code, Cursor, Codex
+                        - ChatGPT, Claude, Gemini, and similar chatbots
+                        - Any AI tool that generates or suggests code
+
+                        > Violations are treated as **academic misconduct** and will result in a failing grade and conduct report.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Why No AI?
+
+                        1. **Skill Development** — Build fundamentals before relying on tools
+                        2. **Plagiarism Risk** — AI-generated code may be flagged
+                        3. **Learning Integrity** — Understanding > shortcuts
+
+                        *If you're unsure whether a tool is permitted, ask the instructor **before** using it.*
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Communication Tips
+
+                        - ✅ Email via **Outlook** (not Canvas messages)
+                        - ✅ Include **COP 3223C** in subject line
+                        - ✅ Watch **Webcourses announcements** — missing one is not an excuse
+                        - ⏰ Replies within 2 business days (weekdays before 5 PM)
+                        - 🚫 No weekend replies
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Religious Observances & University Events
+
+                        - Notify instructor **as soon as possible** in advance
+                        - Student athletes: provide **Program Verification Form** before absence
+                        - Religious observances: reasonable time to make up missed work
+                        - See UCF Policy 4-401 and UCF Regulation 5-020
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Unexpected Campus Closures
+
+                        > In the event of hurricanes, tropical storms, or other emergency closures:
+
+                        - No deadlines enforced during closure
+                        - Schedule and due dates **re-evaluated** when campus reopens
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## What You'll Learn
+
+                        1. Set up C development environments & use `git`
+                        2. Write complete C programs with headers & preprocessor directives
+                        3. Use standard libraries: `stdio`, `stdlib`, `math`, `string`, `time`
+                        4. Apply conditional statements, loops, and functions
+                        5. Work with **pointers**, **arrays**, and **strings**
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## What You'll Learn (cont.)
+
+                        6. Perform file I/O for data persistence
+                        7. Define and use **structs**
+                        8. Apply **dynamic memory management** (`malloc` / `free`)
+                        9. Implement complex data structures like **linked lists**
+                        10. Follow C style conventions and best practices
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Let's Get Started
+
+                        ### COP 3223C — Introduction to Programming with C
+
+                        **Summer 2026**
+
+                        Questions? Email: John.Aedo@ucf.edu
+                        *(Include COP 3223C in the subject line)*
+                        </div>
+                    </script>
+                </section>
+            </div>
+        </div>
+
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/obsidian-markdown.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+
+        <script src="plugin/zoom/zoom.js"></script>
+        <script src="plugin/math/math.js"></script>
+        <script src="plugin/mermaid/mermaid.js"></script>
+        <script src="plugin/chart/chart.umd.js"></script>
+        <script src="plugin/chart/plugin.js"></script>
+        <script src="plugin/customcontrols/plugin.js"></script>
+
+        <script>
+            function extend() {
+                const target = {};
+                for (let i = 0; i < arguments.length; i++) {
+                    const source = arguments[i];
+                    for (const key in source) {
+                        if (source.hasOwnProperty(key)) {
+                            target[key] = source[key];
+                        }
+                    }
+                }
+                return target;
+            }
+
+            function isLight(color) {
+                // normalize to rgb(a)
+                const optionEl = document.createElement("option");
+                optionEl.style.color = color;
+                const normalizedColor = optionEl.style.color;
+
+                const [_, c_r, c_g, c_b] =
+                    normalizedColor.match(/(\d+), (\d+), (\d+)/);
+
+                const brightness = (c_r * 299 + c_g * 587 + c_b * 114) / 1000;
+                return brightness > 155;
+            }
+
+            const bgColor = getComputedStyle(document.documentElement)
+                .getPropertyValue("--r-background-color")
+                .trim();
+
+            if (isLight(bgColor)) {
+                document.body.classList.add("has-light-background");
+            } else {
+                document.body.classList.add("has-dark-background");
+            }
+
+            // default options to init reveal.js
+            const defaultOptions = {
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+                transition: "default", // none/fade/slide/convex/concave/zoom
+                plugins: [
+                    ObsidianMarkdown,
+                    RevealHighlight,
+                    RevealZoom,
+                    RevealNotes,
+                    RevealMath.KaTeX,
+                    RevealMermaid,
+                    RevealChart,
+                    RevealCustomControls,
+                ],
+                allottedTime: "120",
+
+                katex: {
+                    local: "plugin/math/katex",
+                    extensions: ["mhchem"],
+                },
+                markdown: {
+                    gfm: true,
+                },
+                mermaid: {
+                    theme: isLight(bgColor) ? "default" : "dark",
+                },
+                customcontrols: {
+                    controls: [],
+                },
+            };
+
+            if (pageInIframe()) {
+                defaultOptions.scrollActivationWidth = 5;
+            }
+
+            // options from URL query string
+            const queryOptions = Reveal().getQueryHash() || {};
+
+            const options = extend(
+                defaultOptions,
+                {
+                    controls: true,
+                    progress: true,
+                    slideNumber: true,
+                    center: true,
+                    transition: "slide",
+                    transitionSpeed: "default",
+                    width: "1920",
+                    height: "1080",
+                    margin: 0.04,
+                },
+                queryOptions,
+            );
+        </script>
+
+        <script>
+            /**
+             * KaTeX Equation Numbering Note
+             *
+             * KaTeX maintains a global equation counter for \begin{equation} environments.
+             * When navigating between slides, reveal.js math plugin may re-render math, causing
+             * equation numbers to change randomly.
+             *
+             * Note: Regular $$ blocks don't have equation numbers - only \begin{equation} does.
+             *
+             * If you experience issues with equation numbers changing:
+             * Use manual \tag{} commands: \begin{equation}\tag{1} ... \end{equation}
+             */
+
+            Reveal.initialize(options);
+        </script>
+        <!-- created with Slides Extended reveal.html template -->
+    </body>
+</html>

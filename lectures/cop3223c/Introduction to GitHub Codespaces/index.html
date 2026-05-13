@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+
+        <title></title>
+        <link rel="stylesheet" href="/common/dist/reset.css" />
+        <link rel="stylesheet" href="/common/dist/reveal.css" />
+        <link rel="stylesheet" href="/common/css/slides-extended.css" />
+        <link
+            rel="stylesheet"
+            href="/common/dist/theme/ucf-knights.css"
+            id="theme"
+        />
+        <link rel="stylesheet" href="/common/plugin/highlight/zenburn.css" />
+        <link rel="stylesheet" href="/common/plugin/customcontrols/style.css" />
+
+        <script defer src="dist/fontawesome/all.min.js"></script>
+
+        <script type="text/javascript">
+            function pageInIframe() {
+                return window.location !== window.parent.location;
+            }
+
+            let forgetPop = true;
+            function onPopState(event) {
+                if (forgetPop) {
+                    forgetPop = false;
+                } else if (pageInIframe()) {
+                    parent.postMessage(
+                        event.target.location.href,
+                        "app://obsidian.md",
+                    );
+                }
+            }
+            window.onpopstate = onPopState;
+            window.onmessage = (event) => {
+                if (event.data == "reload") {
+                    window.document.location.reload();
+                }
+                forgetPop = true;
+            };
+
+            function fitElements() {
+                const itemsToFit = document.getElementsByClassName("fitText");
+                for (const item in itemsToFit) {
+                    if (Object.hasOwnProperty.call(itemsToFit, item)) {
+                        const element = itemsToFit[item];
+                        fitElement(element, 1, 1000);
+                        element.classList.remove("fitText");
+                    }
+                }
+            }
+
+            function fitElement(element, start, end) {
+                let size = (end + start) / 2;
+                element.style.fontSize = `${size}px`;
+
+                if (Math.abs(start - end) < 1) {
+                    while (element.scrollHeight > element.offsetHeight) {
+                        size--;
+                        element.style.fontSize = `${size}px`;
+                    }
+                    return;
+                }
+
+                if (element.scrollHeight > element.offsetHeight) {
+                    fitElement(element, start, size);
+                } else {
+                    fitElement(element, size, end);
+                }
+            }
+
+            document.onreadystatechange = () => {
+                fitElements();
+                if (document.readyState === "complete") {
+                    if (
+                        pageInIframe() &&
+                        window.location.href.indexOf("?export") != -1
+                    ) {
+                        parent.postMessage(
+                            event.target.location.href,
+                            "app://obsidian.md",
+                        );
+                    }
+                    if (window.location.href.indexOf("print-pdf") != -1) {
+                        let stateCheck = setInterval(() => {
+                            clearInterval(stateCheck);
+                            window.print();
+                        }, 250);
+                    }
+                }
+            };
+        </script>
+    </head>
+
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Introduction to GitHub Codespaces
+                        ## A Complete C Development Workflow
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Creating a Repository & Initializing a Codespace
+
+                        - **GitHub Repository (a.k.a. repo)**: The source of truth for your code.
+                        	- This is where your code lives online.
+                        	- We'll discuss local development later, but for now we'll stick to online coding.
+
+                        - **Codespace**: A cloud-hosted virtual machine (VM) attached to the repo.
+                        	- This is where we'll be writing, compiling, running, and debugging code.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        1. Create a new repository on GitHub.
+                         2. Navigate to the **Code** button.
+                         3. Select the **Codespaces** tab.
+                         4. Click **New Codespace**.
+
+
+                        > ⚡ *The Environment*: VS Code opens in your browser with a cloud-attached container.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Installing the C/C++ Extension
+
+                        - **Default Environment**: Codespaces come with Node.js and basic editing by default.
+                        	- Do this look like a web dev class???
+                        - **Missing Features**: No IntelliSense, debugging, or C-specific tooling by default.
+                        - **Solution**: Install the Microsoft C/C++ Extension.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        1. Open the **Extensions** panel (Ctrl+X, E).
+                        2. Search: `C/C++ Extension Pack`.
+                        3. Click **Install** on `C/C++ Extension Pack`
+
+                        > **Why?** This adds syntax highlighting, error detection, and debugging support to your editor.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Disabling Copilot Autocompletion
+
+                        - **Default Behavior**: GitHub Copilot suggests code inline automatically.
+                        - **Requirement**: In structured tutorials, we want to see the code we write.
+
+                        AI suggestions can create confusion, especially during the early stages of learning.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## How to Disable
+                         1. Open **Settings** (Ctrl+,).
+                         2. Search for `Disable AI Features`
+                         3. Check the option.
+
+
+                        > **Impact**: Prevents code from being auto-inserted, allowing you to learn the syntax manually.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Writing a Hello World C Program
+
+                        **File**: `hello.c`
+
+                        ```c
+                         #include <stdio.h>
+
+                         int main() {
+                             printf("Hello, Codespace!\n");
+                             return 0;
+                         }
+                        ```
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        **Compile & Run**:
+                         ```bash
+                         gcc hello.c -o hello
+                         ./hello
+                         ```
+
+                        > **Goal**: Confirm the environment is compiling and executing C binaries correctly.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Git Basics & Repo Relations
+                        The VM Nature of Codespaces
+
+                        ### The Workflow:
+                        1. **Local Repo vs. Remote**:
+                          - **Codespace**: The ephemeral VM running on GitHub's servers.
+                          - **GitHub Repo**: The permanent storage of your code.
+                        1. **Synchronization**:
+                          - Changes in the Codespace do **not** auto-push to GitHub.
+                          - You must manually manage files.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ### Commands:
+                        ```bash
+                        git status            # Check uncommitted changes
+                        git add .             # Stage all files
+                        git commit -m "hello world" # Save state
+                        git push              # Push to GitHub
+                        ```
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ### Key Concept:
+                        - **VM Nature**: If you close the Codespace without pushing, changes might exist only in the container memory.
+                        - **Persistence**: You must `git push` to save your work to the permanent repository.
+
+                        > **Tip**: The code you see in the Repo (GitHub.com) might lag behind the code you are editing in the Codespace until you commit and push.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Summary
+
+                        1. **Setup**: Open a Codespace from a Repository.
+                        2. **Tooling**: Install C/C++ Extension.
+                        3. **Focus**: Disable AI auto-completion.
+                        4. **Code**: Write and run C programs.
+                        5. **Version**: Commit and push changes to GitHub.
+
+                        > **Final Thought**: Codespaces are powerful, but you must treat them as ephemeral containers requiring explicit version control management.
+                        </div>
+                    </script>
+                </section>
+            </div>
+        </div>
+
+        <script src="dist/reveal.js"></script>
+        <script src="plugin/notes/notes.js"></script>
+        <script src="plugin/markdown/markdown.js"></script>
+        <script src="plugin/obsidian-markdown.js"></script>
+        <script src="plugin/highlight/highlight.js"></script>
+
+        <script src="plugin/zoom/zoom.js"></script>
+        <script src="plugin/math/math.js"></script>
+        <script src="plugin/mermaid/mermaid.js"></script>
+        <script src="plugin/chart/chart.umd.js"></script>
+        <script src="plugin/chart/plugin.js"></script>
+        <script src="plugin/customcontrols/plugin.js"></script>
+
+        <script>
+            function extend() {
+                const target = {};
+                for (let i = 0; i < arguments.length; i++) {
+                    const source = arguments[i];
+                    for (const key in source) {
+                        if (source.hasOwnProperty(key)) {
+                            target[key] = source[key];
+                        }
+                    }
+                }
+                return target;
+            }
+
+            function isLight(color) {
+                // normalize to rgb(a)
+                const optionEl = document.createElement("option");
+                optionEl.style.color = color;
+                const normalizedColor = optionEl.style.color;
+
+                const [_, c_r, c_g, c_b] =
+                    normalizedColor.match(/(\d+), (\d+), (\d+)/);
+
+                const brightness = (c_r * 299 + c_g * 587 + c_b * 114) / 1000;
+                return brightness > 155;
+            }
+
+            const bgColor = getComputedStyle(document.documentElement)
+                .getPropertyValue("--r-background-color")
+                .trim();
+
+            if (isLight(bgColor)) {
+                document.body.classList.add("has-light-background");
+            } else {
+                document.body.classList.add("has-dark-background");
+            }
+
+            // default options to init reveal.js
+            const defaultOptions = {
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+                transition: "default", // none/fade/slide/convex/concave/zoom
+                plugins: [
+                    ObsidianMarkdown,
+                    RevealHighlight,
+                    RevealZoom,
+                    RevealNotes,
+                    RevealMath.KaTeX,
+                    RevealMermaid,
+                    RevealChart,
+                    RevealCustomControls,
+                ],
+                allottedTime: "120",
+
+                katex: {
+                    local: "plugin/math/katex",
+                    extensions: ["mhchem"],
+                },
+                markdown: {
+                    gfm: true,
+                },
+                mermaid: {
+                    theme: isLight(bgColor) ? "default" : "dark",
+                },
+                customcontrols: {
+                    controls: [],
+                },
+            };
+
+            if (pageInIframe()) {
+                defaultOptions.scrollActivationWidth = 5;
+            }
+
+            // options from URL query string
+            const queryOptions = Reveal().getQueryHash() || {};
+
+            const options = extend(
+                defaultOptions,
+                {
+                    controls: true,
+                    progress: true,
+                    slideNumber: true,
+                    center: true,
+                    transition: "slide",
+                    transitionSpeed: "default",
+                    width: "1920",
+                    height: "1080",
+                    margin: 0.04,
+                },
+                queryOptions,
+            );
+        </script>
+
+        <script>
+            /**
+             * KaTeX Equation Numbering Note
+             *
+             * KaTeX maintains a global equation counter for \begin{equation} environments.
+             * When navigating between slides, reveal.js math plugin may re-render math, causing
+             * equation numbers to change randomly.
+             *
+             * Note: Regular $$ blocks don't have equation numbers - only \begin{equation} does.
+             *
+             * If you experience issues with equation numbers changing:
+             * Use manual \tag{} commands: \begin{equation}\tag{1} ... \end{equation}
+             */
+
+            Reveal.initialize(options);
+        </script>
+        <!-- created with Slides Extended reveal.html template -->
+    </body>
+</html>

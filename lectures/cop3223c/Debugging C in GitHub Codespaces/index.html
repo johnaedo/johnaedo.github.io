@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="/common/dist/reset.css">
+    <link rel="stylesheet" href="/common/dist/reveal.css" />
+    <link rel="stylesheet" href="/common/css/slides-extended.css" />
+    <link rel="stylesheet" href="/common/dist/theme/ucf-knights.css" id="theme" />
+    <link rel="stylesheet" href="/common/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" href="/common/plugin/customcontrols/style.css">
+
+
+
+    <script defer src="/common/dist/fontawesome/all.min.js"></script>
+
+    <script type="text/javascript">
+        function pageInIframe() {
+            return (window.location !== window.parent.location);
+        }
+
+        let forgetPop = true;
+        function onPopState(event) {
+            if(forgetPop){
+                forgetPop = false;
+            } else if( pageInIframe()) {
+                parent.postMessage(event.target.location.href, "app://obsidian.md");
+            }
+        }
+        window.onpopstate = onPopState;
+        window.onmessage = event => {
+            if(event.data == "reload"){
+                window.document.location.reload();
+            }
+            forgetPop = true;
+        }
+
+        function fitElements() {
+            const itemsToFit = document.getElementsByClassName('fitText');
+            for (const item in itemsToFit) {
+                if (Object.hasOwnProperty.call(itemsToFit, item)) {
+                    const element = itemsToFit[item];
+                    fitElement(element, 1, 1000);
+                    element.classList.remove('fitText');
+                }
+            }
+        }
+
+        function fitElement(element, start, end) {
+
+            let size = (end + start) / 2;
+            element.style.fontSize = `${size}px`;
+
+            if (Math.abs(start - end) < 1) {
+                while (element.scrollHeight > element.offsetHeight) {
+                    size--;
+                    element.style.fontSize = `${size}px`;
+                }
+                return;
+            }
+
+            if (element.scrollHeight > element.offsetHeight) {
+                fitElement(element, start, size);
+            } else {
+                fitElement(element, size, end);
+            }
+        }
+
+        document.onreadystatechange = () => {
+            fitElements();
+            if (document.readyState === 'complete') {
+                if (pageInIframe() && window.location.href.indexOf("?export") != -1){
+                    parent.postMessage(event.target.location.href, "app://obsidian.md");
+                }
+                if (window.location.href.indexOf("print-pdf") != -1){
+                    let stateCheck = setInterval(() => {
+                        clearInterval(stateCheck);
+                        window.print();
+                    }, 250);
+                }
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# Debugging C in GitHub Codespaces  
+## A Step-by-Step Guide to Native Development
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Prerequisites for C Development  
+
+1. **Extension**: Install the **C/C++ by Microsoft** extension.  
+  - We already installed this in the previous lesson.
+1. **Compiler**: Ensure `gcc` or `clang` is available.  
+  - Codespaces usually come with build-essential packages pre-installed.  
+1. **Debugger**: `gdb` (GNU Debugger) is required for interactive debugging.  
+<br><br>
+
+> 💡 *Check Terminal*: Run `gcc --version` to verify compilation tools are present.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Configuring the Project Structure  
+### `.vscode` Configuration Files  
+  
+To automate C compilation and debugging, create these files in the `.vscode` directory:  
+  
+**1. `tasks.json` (Build)**  
+```json  
+{  
+ "version": "2.0.0",  
+ "tasks": [  
+   {  
+     "label": "Build C Program",  
+     "command": "gcc",  
+     "args": ["-g", "main.c", "-o", "main.out"],  
+     "type": "shell"  
+   }  
+ ]  
+}  
+```
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+**2. `c_cpp_properties.json` (IntelliSense)**  
+```json  
+
+"configurations": [
+	{  
+	 "compilerPath": "/usr/bin/gcc",  
+	 "cStandard": "c11",  
+	 "cppStandard": "c++11"  
+	}
+],
+"version": 4  
+```  
+<br><br>  
+> *Tip*: The `gcc -g` flag ensures debug symbols are generated for the debugger.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Setting Up the Debug Session  
+### `launch.json` Configuration  
+  
+This file tells VS Code how to start the debugger.  
+  
+**Location**: `.vscode/launch.json`  
+  
+```json  
+{  
+ "version": "0.2.0",  
+ "configurations": [  
+   {  
+     "name": "C/C++ Debug",  
+     "type": "cppdbg",  
+     "request": "launch",  
+     "MIMode": "gdb",  
+     "miDebuggerPath": "/usr/bin/gdb",  
+     "cwd": "${workspaceFolder}",  
+     "program": "${workspaceFolder}/main.out",  
+     "preLaunchTask": "Build C Program"  
+   }  
+ ]  
+}  
+```  
+  
+> **Auto-build**: The `preLaunchTask` compiles your code automatically before attaching the debugger.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Interactive Debugging Workflow  
+### 5 Steps to Debug C Code  
+  
+1. **Set Breakpoints**: Click the gutter next to lines in `main.c`.  
+  - Red dot = active breakpoint.  
+2. **Start Debugging**: Press `F5` or click "Run and Debug".  
+3. **Step Over/Into**: Use `Step Over` (F10) or `Step Into` (F11).  
+4. **Inspect Variables**: Hover over pointers, structs, or arrays.  
+5. **Call Stack**: View the execution path and return addresses.  
+  
+> **Pointer Warning**: When debugging pointers, ensure you inspect the address (`&var`) vs the value (`var`).
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Git Integration for C Projects  
+### Managing Source Control in Codespaces  
+  
+- **Untracked Files**: New C files (`main.c`, `debug.h`) are marked as `Untracked`.  
+- **Staging**: Stage changes via Source Control panel or `git add main.c`.  
+- **Commit**:  
+ ```bash  
+ git commit -m "fix: null pointer in memory allocation"  
+ ```
+ <br> <br> 
+- **Push**:  
+ ```bash  
+ git push
+ ```  
+<br><br>
+
+> **Tip**: Codespaces automatically syncs your working tree. If you break your code, you can `git checkout` to revert.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+# ⚠ Common Pitfalls  
+## Troubleshooting C Debugging  
+  
+1. **No Symbols**: Ensure `-g` flag is used during compilation.  
+  - *Fix*: Update `tasks.json` to include `-g`.  
+2. **GDB Path**: Sometimes `gdb` isn't linked in `launch.json`.  
+  - *Fix*: Verify path with `which gdb`.  
+3. **Port Forwarding**: If your C program creates a server socket, forward the port.  
+  - *Fix*: Go to `Port Status` and click the "Open in Browser" icon.  
+4. **Async Code**: Debug async C programs requires specific configurations.  
+  - *Fix*: Use `Thread` debugger options for multi-threaded C apps.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Summary & Next Steps  
+### Recap  
+  
+- **Extension**: Use C/C++ extension by Microsoft.  
+- **Build**: Configure `tasks.json` with `gcc -g`.  
+- **Debug**: Configure `launch.json` with GDB.  
+- **Git**: Commit changes to sync with GitHub.
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" template="" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+## Our Challenge
+1. Write a C program with a loop.  
+2. Set a breakpoint inside the loop.  
+3. Debug until you find the off-by-one error.  
+4. Commit and push to GitHub.
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/obsidian-markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script src="plugin/mermaid/mermaid.js"></script>
+    <script src="plugin/chart/chart.umd.js"></script>
+    <script src="plugin/chart/plugin.js"></script>
+    <script src="plugin/customcontrols/plugin.js"></script>
+
+
+    <script>
+        function extend() {
+            const target = {};
+            for (let i = 0; i < arguments.length; i++) {
+                const source = arguments[i];
+                for (const key in source) {
+                    if (source.hasOwnProperty(key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        }
+
+        function isLight(color) {
+            // normalize to rgb(a)
+            const optionEl = document.createElement("option");
+            optionEl.style.color = color;
+            const normalizedColor = optionEl.style.color;
+
+            const [_, c_r, c_g, c_b] = normalizedColor.match(/(\d+), (\d+), (\d+)/);
+
+            const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+            return brightness > 155;
+        }
+
+        const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+
+        if (isLight(bgColor)) {
+            document.body.classList.add('has-light-background');
+        } else {
+            document.body.classList.add('has-dark-background');
+        }
+
+        // default options to init reveal.js
+        const defaultOptions = {
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'default', // none/fade/slide/convex/concave/zoom
+            plugins: [
+                ObsidianMarkdown,
+                RevealHighlight,
+                RevealZoom,
+                RevealNotes,
+                RevealMath.KaTeX,
+                RevealMermaid,
+                RevealChart,
+                RevealCustomControls,
+            ],
+            allottedTime: "120",
+
+            katex: {
+                local: 'plugin/math/katex',
+                extensions: ["mhchem"],
+            },
+            markdown: {
+                gfm: true,
+            },
+            mermaid: {
+                theme: isLight(bgColor) ? 'default' : 'dark',
+            },
+            customcontrols: {
+                controls: [
+                ]
+            },
+        };
+
+        if ( pageInIframe() ) {
+            defaultOptions.scrollActivationWidth = 5;
+        }
+
+        // options from URL query string
+        const queryOptions = Reveal().getQueryHash() || {};
+
+        const options = extend(defaultOptions, {"controls":true,"progress":true,"slideNumber":true,"center":true,"transition":"slide","transitionSpeed":"default","width":"1920","height":"1080","margin":0.04}, queryOptions);
+    </script>
+
+    <script>
+      /**
+       * KaTeX Equation Numbering Note
+       * 
+       * KaTeX maintains a global equation counter for \begin{equation} environments.
+       * When navigating between slides, reveal.js math plugin may re-render math, causing 
+       * equation numbers to change randomly.
+       * 
+       * Note: Regular $$ blocks don't have equation numbers - only \begin{equation} does.
+       * 
+       * If you experience issues with equation numbers changing:
+       * Use manual \tag{} commands: \begin{equation}\tag{1} ... \end{equation}
+       */
+      
+      Reveal.initialize(options);
+    </script>
+    <!-- created with Slides Extended reveal.html template -->
+</body>
+</html>
