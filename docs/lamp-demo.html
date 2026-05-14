@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAMP Demo - API Documentation</title>
+    <style>
+        body { margin: 0; padding: 0; }
+        #opencollection-container { width: 100vw; height: 100vh; }
+    </style>
+    <link rel="stylesheet" href="https://cdn.opencollection.com/docs.css">
+    <script src="https://cdn.opencollection.com/docs.js"></script>
+</head>
+<body>
+    <div id="opencollection-container"></div>
+    <script>
+        const collectionData = "opencollection: 1.0.0\ninfo:\n  name: LAMP Demo\nitems:\n  - info:\n      name: AddColor\n      type: http\n      seq: 3\n    http:\n      method: GET\n      url: http://45.55.60.202/LAMPAPI/AddColor.php\n      body:\n        type: json\n        data: |-\n          {\n              \"color\": \"Penny White\",\n              \"userId\": \"3\"\n          }\n      auth: inherit\n    runtime:\n      scripts:\n        - type: tests\n          code: Add a color\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: Login\n      type: http\n      seq: 2\n    http:\n      method: GET\n      url: http://45.55.60.202/LAMPAPI/Login.php\n      body:\n        type: json\n        data: |-\n          {\n              \"login\": \"RickL\",\n              \"password\": \"COP4331\"\n          }\n      auth: inherit\n    runtime:\n      scripts:\n        - type: tests\n          code: Login to the application\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: SearchColors\n      type: http\n      seq: 1\n    http:\n      method: POST\n      url: http://lamp.johnaedo.com/LAMPAPI/SearchColors.php\n      body:\n        type: json\n        data: |-\n          {\n              \"search\": \"Green\",\n              \"userId\": 3\n          }\n      auth: inherit\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n    docs: Retrieves colors by substring search of the given argument.\nbundled: true\nextensions:\n  bruno:\n    ignore:\n      - node_modules\n      - .git\n    exportedAt: '2026-05-14T20:04:49.462Z'\n    exportedUsing: Bruno/3.3.0\n";
+        new window.OpenCollection({
+            target: document.getElementById('opencollection-container'),
+            opencollection: collectionData,
+            theme: 'light'
+        });
+    </script>
+</body>
+</html>
