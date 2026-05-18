@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+
+        <title></title>
+        <link rel="stylesheet" href="/common/dist/reset.css" />
+        <link rel="stylesheet" href="/common/dist/reveal.css" />
+        <link rel="stylesheet" href="/common/css/slides-extended.css" />
+        <link
+            rel="stylesheet"
+            href="/common/dist/theme/dracula.css"
+            id="theme"
+        />
+        <link rel="stylesheet" href="/common/plugin/highlight/zenburn.css" />
+        <link rel="stylesheet" href="/common/plugin/customcontrols/style.css" />
+
+        <script defer src="/common/dist/fontawesome/all.min.js"></script>
+
+        <script type="text/javascript">
+            function pageInIframe() {
+                return window.location !== window.parent.location;
+            }
+
+            let forgetPop = true;
+            function onPopState(event) {
+                if (forgetPop) {
+                    forgetPop = false;
+                } else if (pageInIframe()) {
+                    parent.postMessage(
+                        event.target.location.href,
+                        "app://obsidian.md",
+                    );
+                }
+            }
+            window.onpopstate = onPopState;
+            window.onmessage = (event) => {
+                if (event.data == "reload") {
+                    window.document.location.reload();
+                }
+                forgetPop = true;
+            };
+
+            function fitElements() {
+                const itemsToFit = document.getElementsByClassName("fitText");
+                for (const item in itemsToFit) {
+                    if (Object.hasOwnProperty.call(itemsToFit, item)) {
+                        const element = itemsToFit[item];
+                        fitElement(element, 1, 1000);
+                        element.classList.remove("fitText");
+                    }
+                }
+            }
+
+            function fitElement(element, start, end) {
+                let size = (end + start) / 2;
+                element.style.fontSize = `${size}px`;
+
+                if (Math.abs(start - end) < 1) {
+                    while (element.scrollHeight > element.offsetHeight) {
+                        size--;
+                        element.style.fontSize = `${size}px`;
+                    }
+                    return;
+                }
+
+                if (element.scrollHeight > element.offsetHeight) {
+                    fitElement(element, start, size);
+                } else {
+                    fitElement(element, size, end);
+                }
+            }
+
+            document.onreadystatechange = () => {
+                fitElements();
+                if (document.readyState === "complete") {
+                    if (
+                        pageInIframe() &&
+                        window.location.href.indexOf("?export") != -1
+                    ) {
+                        parent.postMessage(
+                            event.target.location.href,
+                            "app://obsidian.md",
+                        );
+                    }
+                    if (window.location.href.indexOf("print-pdf") != -1) {
+                        let stateCheck = setInterval(() => {
+                            clearInterval(stateCheck);
+                            window.print();
+                        }, 250);
+                    }
+                }
+            };
+        </script>
+    </head>
+
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Week 2: Getting Started in C
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Agenda
+
+                        1. Structure of a C Program (review)
+                        2. Variables & Data Types
+                        3. Statements & Expressions
+                        4. Console I/O: `printf` and `fscanf`
+                        5. Conditionals
+                        6. Loops
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Part 1
+
+                        ## Structure of a C Program
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## The Minimal C Program
+
+                        ```c
+                        #include <stdio.h>
+
+                        int main(void) {
+                            return 0;
+                        }
+                        ```
+
+                        - `#include <stdio.h>` — preprocessor directive; pulls in the Standard I/O library
+                        - `int main(void)` — program entry point; OS calls this function
+                        - `return 0;` — signals successful execution to the OS
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Anatomy: Preprocessor → Compiler → Linker
+
+                        ```
+                        Source (.c)
+                            │
+                            ▼  preprocessor (cpp)
+                        Expanded Source
+                            │
+                            ▼  compiler (gcc)
+                        Object File (.o)
+                            │
+                            ▼  linker (ld)
+                        Executable (a.out)
+                        ```
+
+                        The compiler only sees a single translation unit at a time.
+                        The linker stitches multiple `.o` files and libraries together.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Your First Compile
+
+                        ```bash
+                        gcc -Wall -Wextra -std=c17 -o hello hello.c
+                        ./hello
+                        ```
+
+                        | Flag       | Meaning                |
+                        | ---------- | ---------------------- |
+                        | `-Wall`    | Enable common warnings |
+                        | `-Wextra`  | Enable extra warnings  |
+                        | `-std=c17` | Target C17 standard    |
+                        | `-o hello` | Name the output binary |
+
+                        > **Treat warnings as errors during development.** Use `-Werror` for zero tolerance.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" data-background="#1a1a1a" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Part 2
+
+                        ## Variables & Data Types
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Declaring Variables
+                        - In C, you must tell the compiler about the variables you are going to use *and their type* before you use them.
+                        - Contrast with Python, which is dynamically typed:
+                        ```python
+                        # This is valid in Python, but not in C!
+                        myVariable = 3
+                        myVariable = "Hello"
+                        ```
+                        ```c
+                        int myVariable1 = 3;
+                        char *myVariable2 = "Hello";
+                        ```
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Fundamental Types
+
+                        | Type     | Typical Size | Range (signed)                  | Format Specifier |
+                        | -------- | ------------ | ------------------------------- | ---------------- |
+                        | `char`   | 1 byte       | −128 to 127                     | `%c` / `%d`      |
+                        | `int`    | 4 bytes      | −2,147,483,648 to 2,147,483,647 | `%d`             |
+                        | `float`  | 4 bytes      | ~6–7 decimal digits             | `%f`             |
+                        | `double` | 8 bytes      | ~15–16 decimal digits           | `%lf`            |
+
+                        > Sizes are **implementation-defined**. Use `sizeof` to be sure.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## `sizeof` Operator
+
+                        ```c
+                        #include <stdio.h>
+
+                        int main(void) {
+                            printf("char:   %zu bytes\n", sizeof(char));
+                            printf("int:    %zu bytes\n", sizeof(int));
+                            printf("float:  %zu bytes\n", sizeof(float));
+                            printf("double: %zu bytes\n", sizeof(double));
+                            return 0;
+                        }
+                        ```
+
+                        `sizeof` returns a value of type `size_t` — use `%zu` to print it.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## `unsigned` and Type Modifiers
+
+                        ```c
+                        unsigned int score = 0;   // 0 to 4,294,967,295
+                        short int   s     = 10;   // typically 2 bytes
+                        long int    big   = 1000000L;
+                        long long   huge  = 9000000000LL;
+                        ```
+
+                        - Dropping the sign bit **doubles** the positive range
+                        - Use `unsigned` for things that can't be negative (sizes, counts)
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Integer Division — A Classic Trap
+
+                        ```c
+                        int a = 7, b = 2;
+                        int result = a / b;      // result == 3, NOT 3.5!
+                        ```
+
+                        When **both operands** are integers, `/` performs **integer (truncating) division**.
+
+                        ```c
+                        double result = (double)a / b;   // 3.5 ✓
+                        double wrong  = (double)(a / b); // 3.0 ✗ — cast happens too late
+                        ```
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Type Mixing & Implicit Conversion
+
+                        C promotes types automatically in **mixed expressions**:
+
+                        ```
+                        char → int → long → float → double
+                        ```
+
+                        ```c
+                        int   i = 5;
+                        float f = 2.0f;
+                        float r = i + f;   // i promoted to float before addition
+                        ```
+
+                        > **Rule of thumb:** the "wider" type wins in arithmetic.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Explicit Type Casting
+
+                        ```c
+                        int   dollars = 7;
+                        int   cents   = 2;
+                        float price   = (float)dollars + cents / 100.0f;
+                        ```
+
+                        Casting syntax: `(type) expression`
+
+                        Use casts to:
+                        - Force floating-point division from integer operands
+                        - Narrow a wider type (be careful — data loss possible)
+                        - Pass the right type to functions expecting a specific type
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Variable Declaration & Initialization
+
+                        ```c
+                        int   health  = 100;       // initialize at declaration — always!
+                        float speed   = 3.14f;     // f suffix → float literal (not double)
+                        char  grade   = 'A';       // single quotes for char literals
+                        double pi     = 3.14159265358979;
+
+                        int x;                     // uninitialized — undefined behavior to read!
+                        ```
+
+                        > **Best practice:** initialize every variable at the point of declaration.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" data-background="#1a1a1a" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Part 3
+
+                        ## Statements & Expressions
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Expressions vs. Statements
+
+                        | Concept | Definition | Example |
+                        |---------|-----------|---------|
+                        | **Expression** | Produces a value | `3 + 4`, `x * y`, `a > b` |
+                        | **Statement** | Performs an action | `x = 5;`, `return 0;` |
+                        | **Expression statement** | Expression + semicolon | `printf("hi\n");` |
+
+                        Every expression has a **type** and a **value**.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Arithmetic Operators
+
+                        | Operator | Operation | Example | Result |
+                        |----------|-----------|---------|--------|
+                        | `+` | Addition | `3 + 4` | `7` |
+                        | `-` | Subtraction | `10 - 3` | `7` |
+                        | `*` | Multiplication | `3 * 4` | `12` |
+                        | `/` | Division | `7 / 2` | `3` |
+                        | `%` | Modulo (remainder) | `7 % 2` | `1` |
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Order of Operations (Precedence)
+
+                        C follows standard mathematical precedence:
+
+                        ```
+                        Highest:  ()         — grouping / function call
+                                  * / %      — multiplicative
+                                  + -        — additive
+                        Lowest:   =          — assignment (right-to-left)
+                        ```
+
+                        ```c
+                        int x = 2 + 3 * 4;      // 14, not 20
+                        int y = (2 + 3) * 4;    // 20 — parentheses override
+                        ```
+
+                        > When in doubt, **add parentheses** for clarity.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Compound Assignment & Increment
+
+                        ```c
+                        x += 5;   // x = x + 5
+                        x -= 2;   // x = x - 2
+                        x *= 3;   // x = x * 3
+                        x /= 4;   // x = x / 4
+                        x %= 7;   // x = x % 7
+
+                        x++;      // post-increment: use x, then add 1
+                        ++x;      // pre-increment:  add 1, then use x
+                        x--;      // post-decrement
+                        ```
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" data-background="#1a1a1a" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Part 4
+
+                        ## Console Input & Output
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## `printf` — Formatted Output
+
+                        ```c
+                        #include <stdio.h>
+
+                        int main(void) {
+                            int    level  = 5;
+                            double health = 87.5;
+                            char   grade  = 'B';
+
+                            printf("Level: %d\n",         level);
+                            printf("Health: %.1f%%\n",    health);
+                            printf("Grade: %c\n",         grade);
+                            printf("Hex: 0x%X\n",         255);
+                            return 0;
+                        }
+                        ```
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Format Specifier Reference
+
+                        | Specifier | Type | Notes |
+                        |-----------|------|-------|
+                        | `%d` | `int` | Signed decimal integer |
+                        | `%u` | `unsigned int` | Unsigned decimal |
+                        | `%f` | `float` / `double` | Default 6 decimal places |
+                        | `%.2f` | `float` / `double` | Exactly 2 decimal places |
+                        | `%e` | `double` | Scientific notation |
+                        | `%c` | `char` | Single character |
+                        | `%s` | `char *` | String (null-terminated) |
+                        | `%zu` | `size_t` | Result of `sizeof` |
+                        | `%%` | — | Literal `%` character |
+                        | `%p` | pointer | Memory address |
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## `scanf` — The Problem
+
+                        ```c
+                        scanf("%d", &age);     // Works — but has issues:
+                        ```
+
+                        1. Leaves `\n` in the input buffer
+                        2. Next `scanf` call for a `char` or string reads that leftover newline
+                        3. Leads to confusing, hard-to-debug input behavior
+                        4. Prone to bugs like buffer overflow!
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## `fscanf` with Newline Stripping
+
+                        The fix: consume the newline explicitly.
+
+                        ```c
+                        #include <stdio.h>
+
+                        int main(void) {
+                            int age;
+                            char initial;
+
+                            fscanf(stdin, "%d ", &age);       // trailing space eats whitespace/newline
+                            fscanf(stdin, "%c",  &initial);   // now reads the real character
+
+                            printf("Age: %d, Initial: %c\n", age, initial);
+                            return 0;
+                        }
+                        ```
+
+                        > The **space before `%c`** in a format string skips all leading whitespace including `\n`.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Reading Strings Safely
+
+                        ```c
+                        char name[64];
+                        fscanf(stdin, "%63s", name);   // width limiter prevents buffer overflow
+                        ```
+
+                        - `%63s` reads at most 63 characters (leaves room for `\0`)
+                        - Never use `%s` without a width limit on untrusted input
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" data-background="#1a1a1a" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Part 5
+
+                        ## Conditionals
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## What is "True" in C?
+
+                        C has **no dedicated boolean type** in C89/90.
+                        (C99 introduced `_Bool` / `<stdbool.h>`)
+
+                        | Value         | Boolean meaning |
+                        | ------------- | --------------- |
+                        | `0`           | **False**       |
+                        | Anything else | **True**        |
+
+                        ```c
+                        int x = 42;
+                        if (x)          printf("true!\n");   // prints — 42 ≠ 0
+                        if (0)          printf("never\n");   // never prints
+                        if (-1)         printf("true!\n");   // prints — nonzero
+                        ```
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## The `if` Statement
+
+                        ```c
+                        if (condition) {
+                            // executes when condition is true (non-zero)
+                        }
+                        ```
+
+                        ```c
+                        int score = 75;
+
+                        if (score >= 60) {
+                            printf("You passed!\n");
+                        }
+                        ```
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Comparison & Logical Operators
+
+                        | Operator  | Meaning                      |
+                        | --------- | ---------------------------- |
+                        | `==`      | Equal to                     |
+                        | `!=`      | Not equal to                 |
+                        | `<` `>`   | Less / greater than          |
+                        | `<=` `>=` | Less / greater than or equal |
+                        | `&&`      | Logical AND                  |
+                        | `\|\|`    | Logical OR                   |
+                        | `!`       | Logical NOT                  |
+
+                        > **Common bug:** `=` (assignment) vs `==` (comparison)
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## `if` / `else` / `else if`
+
+                        ```c
+                        int score = 82;
+
+                        if (score >= 90) {
+                            printf("A\n");
+                        } else if (score >= 80) {
+                            printf("B\n");
+                        } else if (score >= 70) {
+                            printf("C\n");
+                        } else if (score >= 60) {
+                            printf("D\n");
+                        } else {
+                            printf("F\n");
+                        }
+                        ```
+
+                        Conditions are evaluated **top to bottom**; first match wins.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## `switch` / `case`
+
+                        ```c
+                        char grade = 'B';
+
+                        switch (grade) {
+                            case 'A':
+                                printf("Excellent!\n");
+                                break;
+                            case 'B':
+                                printf("Good job!\n");
+                                break;
+                            case 'C':
+                                printf("Passing.\n");
+                                break;
+                            default:
+                                printf("See advisor.\n");
+                                break;
+                        }
+                        ```
+
+                        - Works on **integer types** and `char` only
+                        - `break` is **required** to prevent fall-through
+                        - `default` handles unmatched values
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Fall-Through: Intentional vs. Accidental
+
+                        ```c
+                        // Intentional fall-through (document it!)
+                        // 0: Sunday, 7: Saturday
+                        switch (day) {
+                            case 6:   /* FALL THROUGH */
+                            case 0:
+                                printf("Weekend!\n");
+                                break;
+                            default:
+                                printf("Weekday\n");
+                                break;
+                        }
+                        ```
+
+                        Forgetting `break` is one of the most common C bugs.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" data-background="#1a1a1a" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Part 6
+
+                        ## Loops
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## The `for` Loop
+
+                        ```c
+                        for (initialization; condition; update) {
+                            // body
+                        }
+                        ```
+
+                        ```c
+                        for (int i = 0; i < 5; i++) {
+                            printf("i = %d\n", i);
+                        }
+                        ```
+
+                        Best for: loops with a **known iteration count**.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## `for` Loop Mechanics
+
+                        ```
+                        ┌─────────────────────────────────────┐
+                        │  int i = 0        ← runs ONCE       │
+                        │      │                              │
+                        │      ▼                              │
+                        │  i < 5 ? ──No──→ exit loop          │
+                        │      │ Yes                          │
+                        │      ▼                              │
+                        │  execute body                       │
+                        │      │                              │
+                        │      ▼                              │
+                        │  i++              ← runs each iter  │
+                        │      │                              │
+                        │      └──────────────────────────────┘
+                        ```
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## The `while` Loop
+
+                        ```c
+                        while (condition) {
+                            // body
+                        }
+                        ```
+
+                        ```c
+                        int n = 1;
+                        while (n <= 100) {
+                            printf("%d\n", n);
+                            n *= 2;
+                        }
+                        ```
+
+                        Best for: loops where the **exit condition is dynamic**.
+                        **May execute zero times** if condition is false initially.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## The `do`…`while` Loop
+
+                        ```c
+                        do {
+                            // body
+                        } while (condition);
+                        ```
+
+                        ```c
+                        int choice;
+                        do {
+                            printf("Enter 1–4: ");
+                            fscanf(stdin, "%d", &choice);
+                        } while (choice < 1 || choice > 4);
+                        ```
+
+                        **Guaranteed to execute at least once.**
+                        Perfect for input validation menus.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## `break` and `continue`
+
+                        ```c
+                        for (int i = 0; i < 10; i++) {
+                            if (i == 3) continue;   // skip iteration when i == 3
+                            if (i == 7) break;      // exit loop entirely when i == 7
+                            printf("%d ", i);
+                        }
+                        // Output: 0 1 2 4 5 6
+                        ```
+
+                        | Keyword    | Effect                                           |
+                        | ---------- | ------------------------------------------------ |
+                        | `break`    | Immediately exits the innermost loop (or switch) |
+                        | `continue` | Skips the rest of the current iteration          |
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Nested Loops
+
+                        ```c
+                        for (int row = 0; row < 3; row++) {
+                            for (int col = 0; col < 3; col++) {
+                                printf("[%d,%d] ", row, col);
+                            }
+                            printf("\n");
+                        }
+                        ```
+
+                        `break`/`continue` affect **only the innermost loop**.
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" data-background="#1a1a1a" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        # Week 2 Wrap-Up
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Key Takeaways
+
+                        - Every C program starts at `main()`; every statement ends with `;`
+                        - Know your types — **integer division truncates**
+                        - Use `(double)` casts before division when you need precision
+                        - `printf` format specifiers must match the argument type
+                        - Use `fscanf(stdin, "%d ", &x)` with trailing space to strip newlines
+                        - In C, **zero is false**, everything else is true
+                        - Match the loop form to the use case: `for` / `while` / `do-while`
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Looking Ahead — Week 2 Lab
+
+                        You will practice today's concepts hands-on:
+
+                        - Type sizing exploration with `sizeof`
+                        - Integer vs. float division experiments
+                        - Building a formatted output table with `printf`
+                        - Writing an input-validated menu loop
+                        - Grade calculator using conditionals
+
+                        See you in lab!
+                        </div>
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        <!-- .slide: class="drop" template="" -->
+                        <div class="" style="position: absolute; left: 0px; top: 0px; height: 1080px; width: 1920px; min-height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+                        ## Resources
+
+                        - *The C Programming Language* — Kernighan & Ritchie (K&R), 2nd Ed.
+                        - *C Programming: A Modern Approach* — K.N. King
+                        - `man 3 printf` — POSIX printf reference
+                        - https://en.cppreference.com/w/c — C language reference
+                        </div>
+                    </script>
+                </section>
+            </div>
+        </div>
+
+        <script src="/common/dist/reveal.js"></script>
+        <script src="/common/plugin/notes/notes.js"></script>
+        <script src="/common/plugin/markdown/markdown.js"></script>
+        <script src="/common/plugin/obsidian-markdown.js"></script>
+        <script src="/common/plugin/highlight/highlight.js"></script>
+
+        <script src="/common/plugin/zoom/zoom.js"></script>
+        <script src="/common/plugin/math/math.js"></script>
+        <script src="/common/plugin/mermaid/mermaid.js"></script>
+        <script src="/common/plugin/chart/chart.umd.js"></script>
+        <script src="/common/plugin/chart/plugin.js"></script>
+        <script src="/common/plugin/customcontrols/plugin.js"></script>
+
+        <script>
+            function extend() {
+                const target = {};
+                for (let i = 0; i < arguments.length; i++) {
+                    const source = arguments[i];
+                    for (const key in source) {
+                        if (source.hasOwnProperty(key)) {
+                            target[key] = source[key];
+                        }
+                    }
+                }
+                return target;
+            }
+
+            function isLight(color) {
+                // normalize to rgb(a)
+                const optionEl = document.createElement("option");
+                optionEl.style.color = color;
+                const normalizedColor = optionEl.style.color;
+
+                const [_, c_r, c_g, c_b] =
+                    normalizedColor.match(/(\d+), (\d+), (\d+)/);
+
+                const brightness = (c_r * 299 + c_g * 587 + c_b * 114) / 1000;
+                return brightness > 155;
+            }
+
+            const bgColor = getComputedStyle(document.documentElement)
+                .getPropertyValue("--r-background-color")
+                .trim();
+
+            if (isLight(bgColor)) {
+                document.body.classList.add("has-light-background");
+            } else {
+                document.body.classList.add("has-dark-background");
+            }
+
+            // default options to init reveal.js
+            const defaultOptions = {
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+                transition: "default", // none/fade/slide/convex/concave/zoom
+                plugins: [
+                    ObsidianMarkdown,
+                    RevealHighlight,
+                    RevealZoom,
+                    RevealNotes,
+                    RevealMath.KaTeX,
+                    RevealMermaid,
+                    RevealChart,
+                    RevealCustomControls,
+                ],
+                allottedTime: "120",
+
+                katex: {
+                    local: "/common/plugin/math/katex",
+                    extensions: ["mhchem"],
+                },
+                markdown: {
+                    gfm: true,
+                },
+                mermaid: {
+                    theme: isLight(bgColor) ? "default" : "dark",
+                },
+                customcontrols: {
+                    controls: [],
+                },
+            };
+
+            if (pageInIframe()) {
+                defaultOptions.scrollActivationWidth = 5;
+            }
+
+            // options from URL query string
+            const queryOptions = Reveal().getQueryHash() || {};
+
+            const options = extend(
+                defaultOptions,
+                {
+                    controls: true,
+                    progress: true,
+                    slideNumber: true,
+                    center: true,
+                    transition: "slide",
+                    transitionSpeed: "default",
+                    width: "1920",
+                    height: "1080",
+                    margin: 0.04,
+                },
+                queryOptions,
+            );
+        </script>
+
+        <script>
+            /**
+             * KaTeX Equation Numbering Note
+             *
+             * KaTeX maintains a global equation counter for \begin{equation} environments.
+             * When navigating between slides, reveal.js math plugin may re-render math, causing
+             * equation numbers to change randomly.
+             *
+             * Note: Regular $$ blocks don't have equation numbers - only \begin{equation} does.
+             *
+             * If you experience issues with equation numbers changing:
+             * Use manual \tag{} commands: \begin{equation}\tag{1} ... \end{equation}
+             */
+
+            Reveal.initialize(options);
+        </script>
+        <!-- created with Slides Extended reveal.html template -->
+    </body>
+</html>
