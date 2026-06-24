@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C Pointers Quiz</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f5f5f3;
+      --bg-tertiary: #ebebea;
+      --text-primary: #1a1a18;
+      --text-secondary: #6b6b67;
+      --border-light: rgba(0,0,0,0.12);
+      --border-mid: rgba(0,0,0,0.22);
+      --border-strong: rgba(0,0,0,0.35);
+      --accent: #185FA5;
+      --accent-bg: #E6F1FB;
+      --accent-text: #0C447C;
+      --success-bg: #E1F5EE;
+      --success-border: #1D9E75;
+      --success-text: #0F6E56;
+      --error-bg: #FAECE7;
+      --error-border: #D85A30;
+      --error-text: #993C1D;
+      --badge-int-bg: #E6F1FB;
+      --badge-int-text: #0C447C;
+      --badge-ptr-bg: #EEEDFE;
+      --badge-ptr-text: #3C3489;
+      --badge-ptp-bg: #E1F5EE;
+      --badge-ptp-text: #085041;
+      --kw-color: #185FA5;
+      --str-color: #3B6D11;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1c1c1a;
+        --bg-secondary: #252522;
+        --bg-tertiary: #2e2e2b;
+        --text-primary: #f0f0ec;
+        --text-secondary: #9a9a94;
+        --border-light: rgba(255,255,255,0.10);
+        --border-mid: rgba(255,255,255,0.18);
+        --border-strong: rgba(255,255,255,0.28);
+        --accent: #378ADD;
+        --accent-bg: #0C447C;
+        --accent-text: #B5D4F4;
+        --success-bg: #04342C;
+        --success-border: #1D9E75;
+        --success-text: #5DCAA5;
+        --error-bg: #4A1B0C;
+        --error-border: #D85A30;
+        --error-text: #F0997B;
+        --badge-int-bg: #0C447C;
+        --badge-int-text: #B5D4F4;
+        --badge-ptr-bg: #3C3489;
+        --badge-ptr-text: #CECBF6;
+        --badge-ptp-bg: #085041;
+        --badge-ptp-text: #9FE1CB;
+        --kw-color: #85B7EB;
+        --str-color: #97C459;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+
+    .game-wrap {
+      width: 100%;
+      max-width: 700px;
+      background: var(--bg-primary);
+      border-radius: var(--radius-lg);
+      border: 0.5px solid var(--border-light);
+      padding: 2rem;
+    }
+
+    .sr-only {
+      position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;
+    }
+
+    .header { margin-bottom: 1.5rem; }
+    h1 { font-size: 22px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+    .subtitle { font-size: 14px; color: var(--text-secondary); }
+
+    .score-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      padding: 10px 14px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border-light);
+    }
+    .score-num { font-weight: 500; color: var(--text-primary); font-size: 15px; font-family: monospace; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .mem-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 13px;
+      font-family: monospace;
+    }
+    .mem-table th {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-align: left;
+      padding: 5px 10px;
+      border-bottom: 0.5px solid var(--border-light);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .mem-table td {
+      padding: 8px 10px;
+      border-bottom: 0.5px solid var(--border-light);
+      color: var(--text-primary);
+      vertical-align: middle;
+    }
+    .mem-table tr:last-child td { border-bottom: none; }
+    .mem-table tr:nth-child(even) td { background: var(--bg-secondary); }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-weight: 500;
+    }
+    .badge-int  { background: var(--badge-int-bg);  color: var(--badge-int-text); }
+    .badge-ptr  { background: var(--badge-ptr-bg);  color: var(--badge-ptr-text); }
+    .badge-ptp  { background: var(--badge-ptp-bg);  color: var(--badge-ptp-text); }
+
+    .code-block {
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-size: 13px;
+      font-family: monospace;
+      line-height: 1.8;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+    }
+    .kw  { color: var(--kw-color); }
+    .cm  { color: var(--text-secondary); }
+    .sv  { color: var(--str-color); }
+    .op-separator {
+      border: none;
+      border-top: 0.5px solid var(--border-light);
+      margin: 8px 0;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      margin-top: -4px;
+    }
+
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+    .q-card {
+      background: var(--bg-primary);
+      border: 0.5px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      transition: border-color 0.15s;
+    }
+    .q-card.correct { border-color: var(--success-border); background: var(--success-bg); }
+    .q-card.wrong   { border-color: var(--error-border);   background: var(--error-bg); }
+    .q-name { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+    .q-var  { font-size: 14px; font-weight: 500; font-family: monospace; color: var(--text-primary); margin-bottom: 8px; }
+    .q-card input {
+      width: 100%;
+      font-size: 13px;
+      font-family: monospace;
+      border: 0.5px solid var(--border-mid);
+      border-radius: var(--radius-sm);
+      padding: 6px 8px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.12s;
+    }
+    .q-card input:focus { border-color: var(--border-strong); }
+    .q-card input:disabled { opacity: 0.6; }
+    .q-result { font-size: 12px; margin-top: 6px; min-height: 16px; }
+    .q-result.ok  { color: var(--success-text); }
+    .q-result.bad { color: var(--error-text); }
+
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    button {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      padding: 8px 20px;
+      border-radius: var(--radius-md);
+      border: 0.5px solid var(--border-mid);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: background 0.12s, transform 0.08s;
+    }
+    button:hover  { background: var(--bg-secondary); }
+    button:active { transform: scale(0.98); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    button.primary {
+      background: var(--accent-bg);
+      color: var(--accent-text);
+      border-color: var(--accent);
+    }
+    button.primary:hover { filter: brightness(0.95); }
+
+    .explanation-box {
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    .explanation-box h3 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+    .explanation-box code {
+      font-family: monospace;
+      background: var(--bg-tertiary);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    hr.divider { border: none; border-top: 0.5px solid var(--border-light); margin: 1.5rem 0; }
+
+    @media (max-width: 480px) {
+      .game-wrap { padding: 1.25rem; }
+      h1 { font-size: 20px; }
+      .questions-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-wrap">
+  <h1 class="sr-only">C Pointers Quiz — practice pointer and double-pointer dereferencing</h1>
+
+  <div class="header">
+    <h1>C Pointers Quiz</h1>
+    <p class="subtitle">Trace the memory, find the values. Answer for all 5 variables after each operation.</p>
+  </div>
+
+  <div class="score-bar">
+    Score: <span class="score-num" id="score-disp">0</span>&nbsp;/&nbsp;<span id="total-disp">0</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    Round <span id="round-disp">1</span>
+  </div>
+
+  <div class="section-label">Memory layout</div>
+  <table class="mem-table" aria-label="Variable memory layout">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Address</th>
+        <th>Initial value</th>
+      </tr>
+    </thead>
+    <tbody id="mem-body"></tbody>
+  </table>
+
+  <div class="section-label">Operation(s)</div>
+  <div class="code-block" id="ops-block" aria-label="C code operations to trace"></div>
+
+  <div class="section-label">What are the values after the operation(s)?</div>
+  <p class="hint">For <code style="font-family:monospace;font-size:12px">int</code> variables enter a number. For pointers enter an address like <code style="font-family:monospace;font-size:12px">0x1A2B</code>.</p>
+  <div class="questions-grid" id="q-grid"></div>
+
+  <div class="actions">
+    <button class="primary" id="submit-btn" onclick="submitAnswers()">Check answers</button>
+  </div>
+
+  <div class="explanation-box" id="expl-box">
+    <h3><i class="ti ti-info-circle" aria-hidden="true" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i>Explanation</h3>
+    <div id="expl-content"></div>
+  </div>
+
+  <div class="actions" id="next-actions" style="display:none">
+    <button onclick="nextRound()">Next problem &rarr;</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  let score = 0, total = 0, round = 1;
+  let state = {};
+
+  /* ── Utilities ── */
+  function randHex() {
+    const pool = [];
+    while (pool.length < 5) {
+      const v = Math.floor(Math.random() * 0xFFFF);
+      const s = '0x' + v.toString(16).toUpperCase().padStart(4, '0');
+      if (!pool.includes(s)) pool.push(s);
+    }
+    return pool;
+  }
+  function randInt(lo, hi) { return Math.floor(Math.random() * (hi - lo + 1)) + lo; }
+
+  /* ── Operation generators ── */
+  function op_simple_deref(v) {
+    const lines = ['*p = ' + v.b.val + ';'];
+    const after = { ...v, a: { ...v.a, val: v.b.val } };
+    const exp = '<code>*p</code> dereferences pointer <code>p</code>, which holds address ' + v.p.val + ' — the address of <code>a</code>. Writing to <code>*p</code> changes the value stored at that address, so <code>a</code> becomes ' + v.b.val + '. Everything else is unchanged.';
+    return { lines, after, exp };
+  }
+
+  function op_reassign_via_ptr(v) {
+    const newVal = randInt(10, 99);
+    const lines = ['*q = ' + newVal + ';'];
+    const after = { ...v, b: { ...v.b, val: newVal } };
+    const exp = '<code>*q</code> dereferences pointer <code>q</code>, which holds address ' + v.q.val + ' — the address of <code>b</code>. Assigning through <code>*q</code> updates <code>b</code> to ' + newVal + '.';
+    return { lines, after, exp };
+  }
+
+  function op_double_deref_read(v) {
+    const target = v.b.val;
+    const lines = ['a = **r;'];
+    const after = { ...v, a: { ...v.a, val: target } };
+    const exp = '<code>r</code> holds ' + v.r.val + ', which is the address of <code>q</code>. So <code>*r</code> gives us <code>q</code>\'s value (' + v.q.val + '), and <code>**r</code> dereferences again to get the value at ' + v.q.val + ' — which is <code>b</code> = ' + v.b.val + '. That value is written into <code>a</code>.';
+    return { lines, after, exp };
+  }
+
+  function op_double_deref_write(v) {
+    const newVal = randInt(10, 99);
+    const lines = ['**r = ' + newVal + ';'];
+    const after = { ...v, b: { ...v.b, val: newVal } };
+    const exp = '<code>r</code> → ' + v.r.val + ' → <code>q</code> → ' + v.q.val + ' → <code>b</code>. Writing to <code>**r</code> writes through both levels of indirection, so <code>b</code> becomes ' + newVal + '. The pointers themselves are unchanged.';
+    return { lines, after, exp };
+  }
+
+  function op_redirect_ptr(v) {
+    const lines = ['q = p;'];
+    const after = { ...v, q: { ...v.q, val: v.p.val } };
+    const exp = 'This assigns the <em>pointer value</em> of <code>p</code> (' + v.p.val + ') to <code>q</code>. Now both <code>p</code> and <code>q</code> point to <code>a</code>. <code>r</code> still holds ' + v.r.val + ' (address of <code>q</code>), but the value stored at that address just changed — so <code>*r</code> now yields ' + v.p.val + '.';
+    return { lines, after, exp };
+  }
+
+  function op_redirect_ptp(v) {
+    const lines = ['*r = p;'];
+    const after = { ...v, q: { ...v.q, val: v.p.val } };
+    const exp = '<code>r</code> holds ' + v.r.val + ' which is the address of <code>q</code>. So <code>*r</code> is <code>q</code> itself. Assigning <code>p</code> to <code>*r</code> changes <code>q</code> so it now holds ' + v.p.val + ' (address of <code>a</code>). Now <code>q</code> points to <code>a</code> instead of <code>b</code>.';
+    return { lines, after, exp };
+  }
+
+  function op_chain_write(v) {
+    const newA = randInt(10, 99);
+    const newB = randInt(10, 99);
+    const lines = ['*p = ' + newA + ';', '**r = ' + newB + ';'];
+    const after = { ...v, a: { ...v.a, val: newA }, b: { ...v.b, val: newB } };
+    const exp = 'First, <code>*p</code> = ' + newA + ' sets <code>a</code> to ' + newA + ' (p → ' + v.p.val + ' → a). Then <code>**r</code> = ' + newB + ': r → ' + v.r.val + ' → q → ' + v.q.val + ' → b, so <code>b</code> becomes ' + newB + '.';
+    return { lines, after, exp };
+  }
+
+  function op_ptr_to_ptr_then_read(v) {
+    const lines = ['p = *r;', 'a = *p;'];
+    const after = { ...v, p: { ...v.p, val: v.q.val }, a: { ...v.a, val: v.b.val } };
+    const exp = 'First, <code>p = *r</code>: <code>r</code> → ' + v.r.val + ' → <code>q</code>, so <code>*r</code> is the value of <code>q</code> (' + v.q.val + '). Now <code>p</code> holds ' + v.q.val + ' and points to <code>b</code>. Then <code>a = *p</code>: <code>*p</code> dereferences the new <code>p</code>, yielding <code>b</code> = ' + v.b.val + '. So <code>a</code> becomes ' + v.b.val + '.';
+    return { lines, after, exp };
+  }
+
+  function pickOp(vars) {
+    const ops = [
+      op_simple_deref,
+      op_reassign_via_ptr,
+      op_double_deref_read,
+      op_double_deref_write,
+      op_redirect_ptr,
+      op_redirect_ptp,
+      op_chain_write,
+      op_ptr_to_ptr_then_read,
+    ];
+    return ops[Math.floor(Math.random() * ops.length)](vars);
+  }
+
+  /* ── State builder ── */
+  function buildState() {
+    const addrs = randHex();
+    const [aAddr, bAddr, pAddr, qAddr, rAddr] = addrs;
+    const vars = {
+      a: { name: 'a', type: 'int',    addr: aAddr, val: randInt(10, 99) },
+      b: { name: 'b', type: 'int',    addr: bAddr, val: randInt(10, 99) },
+      p: { name: 'p', type: 'int*',   addr: pAddr, val: aAddr },
+      q: { name: 'q', type: 'int*',   addr: qAddr, val: bAddr },
+      r: { name: 'r', type: 'int**',  addr: rAddr, val: qAddr },
+    };
+    return { vars, op: pickOp(vars) };
+  }
+
+  /* ── Renderers ── */
+  function renderMemTable(vars) {
+    const rows = [
+      { ...vars.a, cls: 'badge-int'  },
+      { ...vars.b, cls: 'badge-int'  },
+      { ...vars.p, cls: 'badge-ptr'  },
+      { ...vars.q, cls: 'badge-ptr'  },
+      { ...vars.r, cls: 'badge-ptp'  },
+    ];
+    document.getElementById('mem-body').innerHTML = rows.map(r => `
+      <tr>
+        <td style="font-weight:500">${r.name}</td>
+        <td><span class="badge ${r.cls}">${r.type}</span></td>
+        <td style="color:var(--text-secondary)">${r.addr}</td>
+        <td>${r.val}</td>
+      </tr>
+    `).join('');
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderOps(lines, vars) {
+    const decls = [
+      `<span class="kw">int</span> a = <span class="sv">${vars.a.val}</span>; <span class="cm">// @ ${vars.a.addr}</span>`,
+      `<span class="kw">int</span> b = <span class="sv">${vars.b.val}</span>; <span class="cm">// @ ${vars.b.addr}</span>`,
+      `<span class="kw">int</span> *p = &amp;a; <span class="cm">// p holds ${vars.p.val}, p is stored @ ${vars.p.addr}</span>`,
+      `<span class="kw">int</span> *q = &amp;b; <span class="cm">// q holds ${vars.q.val}, q is stored @ ${vars.q.addr}</span>`,
+      `<span class="kw">int</span> **r = &amp;q; <span class="cm">// r holds ${vars.r.val}, r is stored @ ${vars.r.addr}</span>`,
+    ].join('<br>');
+
+    const opLines = lines.map(l =>
+      `<hr class="op-separator"><div class="op-line">${esc(l)}</div>`
+    ).join('');
+
+    document.getElementById('ops-block').innerHTML = decls + opLines;
+  }
+
+  function renderQuestions() {
+    const items = [
+      { key: 'a', desc: 'value of a',            hint: 'e.g. 42'     },
+      { key: 'b', desc: 'value of b',            hint: 'e.g. 58'     },
+      { key: 'p', desc: 'value of p (address)',  hint: 'e.g. 0x1A2B' },
+      { key: 'q', desc: 'value of q (address)',  hint: 'e.g. 0x1A2B' },
+      { key: 'r', desc: 'value of r (address)',  hint: 'e.g. 0x1A2B' },
+    ];
+    document.getElementById('q-grid').innerHTML = items.map(it => `
+      <div class="q-card" id="card-${it.key}">
+        <div class="q-name">${it.desc}</div>
+        <div class="q-var">${it.key} = ?</div>
+        <input type="text" id="inp-${it.key}" placeholder="${it.hint}"
+               autocomplete="off" spellcheck="false"
+               aria-label="${it.desc}" />
+        <div class="q-result" id="res-${it.key}" aria-live="polite"></div>
+      </div>
+    `).join('');
+
+    /* Allow Enter key to submit */
+    document.getElementById('q-grid').querySelectorAll('input').forEach(inp => {
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter') submitAnswers();
+      });
+    });
+  }
+
+  /* ── Evaluation ── */
+  function normalize(s) {
+    s = s.trim();
+    if (/^0x/i.test(s)) return '0x' + s.slice(2).toUpperCase().padStart(4, '0');
+    return s;
+  }
+
+  function submitAnswers() {
+    const after = state.op.after;
+    let allCorrect = true;
+
+    ['a', 'b', 'p', 'q', 'r'].forEach(k => {
+      const inp  = document.getElementById('inp-' + k);
+      const card = document.getElementById('card-' + k);
+      const res  = document.getElementById('res-' + k);
+      const user = normalize(inp.value);
+      const isPtr = (k === 'p' || k === 'q' || k === 'r');
+      const correct = isPtr ? after[k].val : String(after[k].val);
+      const isOk = (user === correct);
+
+      card.className = 'q-card ' + (isOk ? 'correct' : 'wrong');
+      res.className  = 'q-result ' + (isOk ? 'ok' : 'bad');
+      res.textContent = isOk ? '✓ Correct' : '✗ Answer: ' + correct;
+      inp.disabled = true;
+      if (!isOk) allCorrect = false;
+    });
+
+    total++;
+    if (allCorrect) score++;
+    document.getElementById('score-disp').textContent = score;
+    document.getElementById('total-disp').textContent = total;
+
+    document.getElementById('expl-content').innerHTML = state.op.exp;
+    document.getElementById('expl-box').style.display = 'block';
+    document.getElementById('submit-btn').disabled = true;
+    document.getElementById('next-actions').style.display = 'flex';
+  }
+
+  /* ── Round management ── */
+  function nextRound() {
+    round++;
+    document.getElementById('round-disp').textContent = round;
+    document.getElementById('expl-box').style.display = 'none';
+    document.getElementById('next-actions').style.display = 'none';
+    document.getElementById('submit-btn').disabled = false;
+    initRound();
+  }
+
+  function initRound() {
+    state = buildState();
+    renderMemTable(state.vars);
+    renderOps(state.op.lines, state.vars);
+    renderQuestions();
+    document.getElementById('q-grid').querySelector('input').focus();
+  }
+
+  /* ── Expose globals used by inline onclick ── */
+  window.submitAnswers = submitAnswers;
+  window.nextRound = nextRound;
+
+  initRound();
+})();
+</script>
+</body>
+</html>
