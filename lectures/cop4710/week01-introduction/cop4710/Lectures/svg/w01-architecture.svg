@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-labelledby="t d"><title id="t">DBMS architecture</title><desc id="d">Applications send queries to the query processor, which uses the storage manager; the transaction manager coordinates locking and logging; everything persists on disk.</desc><rect x="0" y="0" width="900" height="540" fill="#ffffff" rx="10"/>
+<defs><marker id="m374151" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#374151"/></marker><marker id="m374151s" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#374151"/></marker></defs>
+<rect x="60" y="16" width="180" height="54" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+<text x="150.0" y="34.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Web / mobile app</text>
+<text x="150.0" y="52.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">via a driver</text>
+<rect x="260" y="16" width="180" height="54" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+<text x="350.0" y="34.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Analyst</text>
+<text x="350.0" y="52.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">ad-hoc SQL</text>
+<rect x="460" y="16" width="180" height="54" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+<text x="550.0" y="34.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">DBA</text>
+<text x="550.0" y="52.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">DDL, tuning</text>
+<line x1="340" y1="74" x2="340" y2="104" stroke="#374151" stroke-width="2" marker-end="url(#m374151)"/>
+<text x="366.0" y="89.0" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">SQL</text>
+<rect x="40" y="108" width="600" height="128" rx="10" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/>
+<text x="60" y="128" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" text-anchor="start" font-weight="bold" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Query processor</text>
+<rect x="64" y="150" width="168" height="66" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="148.0" y="174.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Parser</text>
+<text x="148.0" y="192.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">syntax, names</text>
+<rect x="256" y="150" width="168" height="66" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="340.0" y="174.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Optimizer</text>
+<text x="340.0" y="192.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">picks a plan</text>
+<line x1="232" y1="183" x2="254" y2="183" stroke="#374151" stroke-width="2" marker-end="url(#m374151)"/>
+<rect x="448" y="150" width="168" height="66" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="532.0" y="174.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Executor</text>
+<text x="532.0" y="192.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">runs operators</text>
+<line x1="424" y1="183" x2="446" y2="183" stroke="#374151" stroke-width="2" marker-end="url(#m374151)"/>
+<line x1="340" y1="238" x2="340" y2="268" stroke="#374151" stroke-width="2" marker-end="url(#m374151)"/>
+<rect x="40" y="272" width="600" height="140" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+<text x="60" y="292" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" text-anchor="start" font-weight="bold" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Storage manager</text>
+<rect x="64" y="316" width="168" height="72" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="148.0" y="343.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Access methods</text>
+<text x="148.0" y="361.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">heap files, indexes</text>
+<rect x="256" y="316" width="168" height="72" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="340.0" y="343.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Buffer manager</text>
+<text x="340.0" y="361.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">pages in RAM</text>
+<line x1="232" y1="352" x2="254" y2="352" stroke="#374151" stroke-width="2" marker-end="url(#m374151)"/>
+<rect x="448" y="316" width="168" height="72" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="532.0" y="343.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Disk space mgr</text>
+<text x="532.0" y="361.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">allocates pages</text>
+<line x1="424" y1="352" x2="446" y2="352" stroke="#374151" stroke-width="2" marker-end="url(#m374151)"/>
+<rect x="670" y="108" width="200" height="304" rx="10" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+<text x="770" y="130" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="bold" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Transaction mgr</text>
+<rect x="690" y="156" width="160" height="80" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="770.0" y="187.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Lock manager</text>
+<text x="770.0" y="205.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">isolation</text>
+<rect x="690" y="256" width="160" height="80" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="770.0" y="287.55" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Log / recovery</text>
+<text x="770.0" y="305.75" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">atomicity, durability</text>
+<text x="770" y="372" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal" fill="#6b7280" xml:space="preserve" dominant-baseline="middle">talks to every layer</text>
+<line x1="668" y1="352" x2="642" y2="352" stroke="#374151" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#m374151)" marker-start="url(#m374151s)"/>
+<line x1="668" y1="183" x2="642" y2="183" stroke="#374151" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#m374151)" marker-start="url(#m374151s)"/>
+<line x1="340" y1="414" x2="340" y2="444" stroke="#374151" stroke-width="2" marker-end="url(#m374151)"/>
+<rect x="40" y="448" width="830" height="76" rx="10" fill="#f3f4f6" stroke="#6b7280" stroke-width="2"/>
+<text x="60" y="468" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="18" text-anchor="start" font-weight="bold" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Disk / SSD</text>
+<rect x="190" y="462" width="150" height="48" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="265.0" y="486.0" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Data files</text>
+<rect x="358" y="462" width="150" height="48" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="433.0" y="486.0" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Index files</text>
+<rect x="526" y="462" width="150" height="48" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="601.0" y="486.0" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">System catalog</text>
+<rect x="694" y="462" width="150" height="48" rx="6" fill="#ffffff" stroke="#374151" stroke-width="2"/>
+<text x="769.0" y="486.0" font-family="'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="normal" fill="#1f2937" xml:space="preserve" dominant-baseline="middle">Write-ahead log</text>
+<line x1="770" y1="414" x2="770" y2="460" stroke="#374151" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#m374151)"/>
+</svg>
